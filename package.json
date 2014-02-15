@@ -1,0 +1,28 @@
+{
+  "name": "Mesh",
+  "version": "0.0.0",
+  "author": "Matt Owen <matt@planwork.us>",
+  "description": "Javascript",
+  "scripts": {
+    "start": "node examples/vvhatever.js",
+    "test": "./node_modules/.bin/mocha -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/instagram-realtime/Mesh.git"
+  },
+  "keywords": [
+    "WebGL",
+    "STL",
+    "OBJ"
+  ],
+  "dependencies" : {
+  },
+  "devDependencies": {
+    "mocha":  "*"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.6"
+  }
+}
