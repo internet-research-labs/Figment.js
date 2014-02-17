@@ -1,0 +1,149 @@
+<!DOCTYPE html5>
+<html>
+  <head>
+    <title>vv/e</title>
+    <script src="../src/Mesh.js"></script>
+    <script src="three.min.js"></script>
+    <script src="glMatrix-0.9.5.min.js"></script>
+    <!-- Vertex Shader -->
+    <script type="x-shader/x-vertex" id="vert-pass">
+      attribute vec3 aVertexPosition;
+      attribute vec4 aVertexColor;
+      uniform mat4 uModelViewMatrix;
+      uniform mat4 uPerspectiveMatrix;
+      varying vec4 vColor;
+      void main() {
+        vColor = aVertexColor;
+        gl_Position = uPerspectiveMatrix * uModelViewMatrix * vec4(aVertexPosition, 1.0);
+      }
+    </script>
+    <!-- Fragment Shader -->
+    <script type="x-shader/x-fragment" id="frag-pass">
+      precision mediump float;
+      varying vec4 vColor;
+      void main() {
+        gl_FragColor = vec4(1.0);
+      }
+    </script>
+    <!-- Helper -->
+    <script>
+      function perspectiveMatrix (fieldOfView, aspectRatio, nearPlane, farPlane) {
+        fieldOfView = fieldOfView || 30.0;
+        aspectRatio = aspectRatio || 1.0;
+        nearPlane   = nearPlane   || 0.1;
+        farPlane    = farPlane    || 100.0;
+        var perspMatrix = mat4.perspective();
+        mat4.perspective(fieldOfView, aspectRatio, nearPlane, farPlane, perspMatrix);
+        return perspMatrix;
+      }
+    </script>
+  </head>
+  <body>
+
+    <div>
+      <canvas width="500" height="500" id="pleasefeeldeep"></canvas>
+    </div>
+
+    <script>
+
+      // Execute script in an object-like wrapper
+      ~function () {
+        var canvas  = document.getElementById('pleasefeeldeep');
+        var gl      = canvas.getContext('webgl');
+
+        this.geom = {
+          vbuffer : gl.createBuffer(),
+          nbuffer : gl.createBuffer(),
+          ibuffer : gl.createBuffer()
+        };
+
+        this.mesh = new Mesh();
+
+        init();
+        loop();
+
+        // Init objects
+        function init () {
+          // Geometry setup
+          mesh.addVertex([ +0, +0, +0 ]);
+          mesh.addVertex([ -1, -1, -0 ]);
+          mesh.addVertex([ -1, +1, -0 ]);
+          mesh.addVertex([ +1, -1, +0 ]);
+          mesh.addIndices([ 0, 1, 2 ]);
+          mesh.addIndices([ 0, 1, 3 ]);
+          mesh.addIndices([ 0, 2, 3 ]);
+          mesh.addIndices([ 1, 2, 3 ]);
+
+          // Buffer setup
+          gl.bindBuffer(gl.ARRAY_BUFFER, this.geom.vbuffer);
+          gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.m.vertices), gl.STATIC_DRAW);
+
+          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.geom.ibuffer);
+          gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(mesh.m.indices), gl.STATIC_DRAW);
+
+          // Shader setup
+          var vert_shader = gl.createShader(gl.VERTEX_SHADER);
+          var frag_shader = gl.createShader(gl.FRAGMENT_SHADER);
+          gl.shaderSource(vert_shader, document.getElementById('vert-pass').innerHTML);
+          gl.shaderSource(frag_shader, document.getElementById('frag-pass').innerHTML);
+          gl.compileShader(vert_shader);
+          gl.compileShader(frag_shader);
+          this.prog = gl.createProgram();
+          gl.attachShader(this.prog, vert_shader);
+          gl.attachShader(this.prog, frag_shader);
+          gl.linkProgram(this.prog);
+          gl.useProgram(this.prog);
+
+          // Setup clear color
+          gl.clearColor(.25, .22, .2, 1);
+
+          // Set viewport
+          gl.viewport(0, 0, 400, 400);
+        }
+
+        // Update mesh
+        function update () {
+        }
+
+        // Draw mesh
+        function draw () {
+          // Attribute variables
+          gl.clearDepth(1.0);
+          gl.enable(gl.DEPTH_TEST);
+          gl.enable(gl.BLEND);
+          gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+          var perspMatrix = perspectiveMatrix();
+          var mviewMatrix = new Float32Array([
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            0, 0, -5, 1
+          ]);
+
+
+          var uPerspectiveMatrix  = gl.getUniformLocation(this.prog, "uPerspectiveMatrix");
+          var uModelViewMatrix    = gl.getUniformLocation(this.prog, "uModelViewMatrix");
+          gl.uniformMatrix4fv(uPerspectiveMatrix, false, new Float32Array(perspMatrix));
+          gl.uniformMatrix4fv(uModelViewMatrix,   false, new Float32Array(mviewMatrix));
+
+          var aVertexPos = gl.getAttribLocation(this.prog, "aVertexPosition");
+          gl.enableVertexAttribArray(aVertexPos);
+
+          gl.bindBuffer(gl.ARRAY_BUFFER, this.geom.vbuffer);
+          gl.vertexAttribPointer(aVertexPos, 3.0, gl.FLOAT, false, 0, 0);
+
+          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.geom.ibuffer);
+          gl.drawElements(gl.TRIANGLES, mesh.m.indices.length, gl.UNSIGNED_SHORT, 0);
+        }
+
+        // Loop
+        function loop () {
+          requestAnimationFrame(loop);
+          update();
+          draw();
+        }
+      }();
+    </script>
+  </body>
+</html>
