@@ -1,5 +1,5 @@
 {
-  "name": "figment",
+  "name": "figure",
   "version": "0.0.0",
   "description": "CommonJS Figure Drawer. Imports and Exports a variety of 3D models.",
   "main": "libs/InstagramStream.js",
