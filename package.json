@@ -2,19 +2,13 @@
   "name": "figment",
   "version": "0.0.0",
   "description": "CommonJS Figure Drawer. Imports and Exports a variety of 3D models.",
-  "main": "libs/InstagramStream.js",
-  "dependencies": {
-  },
   "devDependencies": {
     "mocha": "1.x.x",
     "express": "3.x.x",
     "socket.io": "0.9.x"
   },
   "scripts": {
-    "start": "node examples/socket.io.js",
-    "example-express": "node examples/express.js",
-    "example-http": "node examples/http.js",
-    "example-socket.io": "node examples/socket.io.js",
+    "start": "I can't really figure out what to do here",
     "test": "./node_modules/.bin/mocha -R spec"
   },
   "engines": {
