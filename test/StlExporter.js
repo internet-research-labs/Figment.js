@@ -4,7 +4,7 @@ var StlExporter = require('../src/StlExporter.js');
 
 describe('StlExporter', function () {
 
-  describe('From: Mesh', function () {
+  describe('from Mesh', function () {
     var mesh  = new Mesh();
     var maker = new StlExporter();
     mesh.addVertex([ -1, -1, +0 ]);

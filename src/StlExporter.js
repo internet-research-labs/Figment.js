@@ -62,9 +62,6 @@
       str += 'endfacet';
     }
 
-    console.log('PPP');
-    console.log(str);
-
     return str;
 
     // Get vertex starting at i-th offset
