@@ -18,6 +18,14 @@ function Mesh () {
  * @return undefined undefined
  */
 Mesh.prototype.addFace = function (face) {
+  this.addVertex(face.m.a);
+  this.addVertex(face.m.b);
+  this.addVertex(face.m.c);
+  this.addIndices([
+    this.m.vertices.length-3,
+    this.m.vertices.length-2,
+    this.m.vertices.length-1
+  ]);
 };
 
 Mesh.prototype.addVertex = function (points) {
@@ -37,12 +45,6 @@ Mesh.prototype.addIndices = function (indices) {
 };
 
 /**
- * Optimize Element Array Buffer
- */
-Mesh.prototype.removeDuplicates = function () {
-};
-
-/**
  * Structure for Efficiently Adding Faces to a Mesh
  */
 Mesh.Face = function (a, b, c, n) {
@@ -53,6 +55,7 @@ Mesh.Face = function (a, b, c, n) {
   this.m.b = b ? b : [];
   this.m.c = c ? c : [];
   this.m.n = n ? n : [ 0, 0, 0 ];
+  return this;
 }
 
 /**
