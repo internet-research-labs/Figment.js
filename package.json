@@ -1,5 +1,5 @@
 {
-  "name": "figure",
+  "name": "figment",
   "version": "0.0.0",
   "description": "CommonJS Figure Drawer. Imports and Exports a variety of 3D models.",
   "main": "libs/InstagramStream.js",
@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/internet-research-labs/Mesh.git"
+    "url": "https://github.com/internet-research-labs/Figment.js.git"
   },
   "keywords": [
     "WebGL",
