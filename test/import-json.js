@@ -7,12 +7,8 @@ describe('JsonImporter', function () {
   // JSON -> MESH
   describe('to Mesh', function () {
     var importer = new JsonImporter();
-  });
 
-  // JSON -> STL
-  describe('to STL', function () {
-    it('should create a valid STL file', function () {
-
+    it('should import a JSON file', function () {
     });
   });
 
