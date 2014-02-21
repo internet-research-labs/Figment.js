@@ -6,10 +6,6 @@ Importer.prototype.load = function (encoded_string) {
   return this;
 };
 
-Importer.prototype.file = function (file_name) {
-  return this;
-};
-
 Importer.prototype.stream = function (stream) {
   return this;
 };

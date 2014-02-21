@@ -23,6 +23,16 @@
    * @return undefined undefined
    */
   JsonImporter.prototype.load = function (encoded_string) {
+    var meshJson;
+    try {
+      meshJson = JSON.parse(encoded_string);
+    }
+    catch (e) {
+      throw new Error('Encoded String is unrecognizable JSON');
+    }
+    // ...
+    this.meshJson = meshJson;
+    return this;
   };
 
   /**
@@ -31,6 +41,8 @@
    */
   JsonImporter.prototype.make = function () {
     var mesh = new Mesh();
+
+    parse(this.meshJson);
 
     return mesh;
   };
