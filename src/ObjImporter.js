@@ -66,28 +66,66 @@
       // Vertex lines get added as a three vertices
       else if (re.vertex.exec(line) !== null) {
         result = re.vertex.exec(line);
-        mesh.addVertex(line[1]);
-        mesh.addVertex(line[2]);
-        mesh.addVertex(line[3]);
+        result = [ Number(result[1]), Number(result[2]), Number(result[3]) ];
+        mesh.addVertex(result);
       }
       // Normal lines get ignored for now
       else if (re.normal.exec(line) !== null) {
         false;
       }
       // UV-patterns get ignored completely
-      else if (re.uv.exec(line)) {
+      else if (re.uv.exec(line) !== null) {
         false;
       }
-      // Face Type 1 - just vertices
-      else if (re.face1.exec(line)) {
+      // Face Type 1 - just vertex
+      else if (re.face1.exec(line) !== null) {
+        result = re.face1.exec(line);
+        var face = [ Number(result[1]), Number(result[2]), Number(result[3]) ];
+        add_face(face);
       }
+      // Face Type 2 - vertices-texture
+      else if (re.face2.exec(line) !== null) {
+        result = re.face2.exec(line);
+        var face = [ Number(result[1]), Number(result[2]), Number(result[3]) ];
+        add_face(face);
+      }
+      // Face Type 3 - vertex-texture-normal
+      else if (re.face3.exec(line) !== null) {
+      }
+      // Face Type 4 - vertex-normal
+      else if (re.face4.exec(line) !== null) {
+      }
+      else {
+        // This didn't work
+      }
+    }
+
+    /**
+     * Create a Face Out of a Set of Vertices
+     */
+    function add_face (face) {
+      // Triangle Face
+      if (face.length === 3)
+        1;
+      // Square Face
+      else if (face.length === 4)
+        2;
+    }
+    /**
+     * Add a UV-Texture-Coordinate to a Face
+     */
+    function add_uv (normal) {
+      // no-op
+    }
+    /**
+     * Add a Normal to a Face
+     */
+    function add_normal () {
     }
 
     return new Mesh();
   }
 }
-
-
 (
   require,
   exports,
