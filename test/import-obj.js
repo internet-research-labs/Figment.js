@@ -27,7 +27,11 @@ describe('ObjImporter', function () {
     assert(mesh instanceof Mesh);
   });
 
+  xit('should load normals of a mesh', function () {
+  });
+
   it('should load a ', function () {
+    importer.load(fluidObj).make();
   });
 
 });
