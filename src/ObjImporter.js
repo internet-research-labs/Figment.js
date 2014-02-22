@@ -64,13 +64,13 @@
       if (line.length === 0 || line.charAt(0) === '#')
         continue;
       // Vertex lines get added as a three vertices
-      else if (re.vertex.exec(line) !== null) {
+      else if (re.vertex.test(line)) {
         result = re.vertex.exec(line);
         result = [ Number(result[1]), Number(result[2]), Number(result[3]) ];
         mesh.addVertex(result);
       }
       // Normal lines get ignored for now
-      else if (re.normal.exec(line) !== null) {
+      else if (re.normal.test(line)) {
         false;
       }
       // UV-patterns get ignored completely
@@ -78,49 +78,52 @@
         false;
       }
       // Face Type 1 - just vertex
-      else if (re.face1.exec(line) !== null) {
+      else if (re.face1.test(line)) {
         result = re.face1.exec(line);
-        var face = [ Number(result[1]), Number(result[2]), Number(result[3]) ];
-        add_face(face);
+        var face = [ Number(result[1]), Number(result[2]), Number(result[3]), Number(result[4]) ];
+        add_face(mesh, face);
       }
       // Face Type 2 - vertices-texture
-      else if (re.face2.exec(line) !== null) {
+      // NOTE: Ignoring texture completely
+      else if (re.face2.test(line)) {
         result = re.face2.exec(line);
-        var face = [ Number(result[1]), Number(result[2]), Number(result[3]) ];
-        add_face(face);
+        var face = [ Number(result[2]), Number(result[5]), Number(result[8]), Number(result[11]) ];
+        add_face(mesh, face);
       }
       // Face Type 3 - vertex-texture-normal
-      else if (re.face3.exec(line) !== null) {
+      // NOTE: Ignoring texture completely and ignoring normal
+      else if (re.face3.test(line)) {
+        result = re.face3.exec(line);
+        var face = [ Number(result[2]), Number(result[6]), Number(result[10]), Number(result[14]) ];
+        add_face(mesh, face);
       }
       // Face Type 4 - vertex-normal
-      else if (re.face4.exec(line) !== null) {
+      // NOTE: Ignoring normal completely
+      else if (re.face4.exec(line)) {
+        result = re.face4.exec(line);
+        var face = [ Number(result[2]), Number(result[5]), Number(result[8]), Number(result[11]) ];
+        add_face(mesh, face);
       }
       else {
-        // This didn't work
+        // Probably vendor specific line (or junk)
       }
     }
 
     /**
      * Create a Face Out of a Set of Vertices
+     * Determine whether the face is triangular or square, and correspondingly
+     * add it to the mesh.
+     * @param {Mesh} mesh a mesh to modify in order to "copy" the OBJ file
+     * @param {Number[4]} face an array of numbers, representing indices
+     * @return undefined undefined
      */
-    function add_face (face) {
-      // Triangle Face
-      if (face.length === 3)
-        1;
-      // Square Face
-      else if (face.length === 4)
-        2;
-    }
-    /**
-     * Add a UV-Texture-Coordinate to a Face
-     */
-    function add_uv (normal) {
-      // no-op
-    }
-    /**
-     * Add a Normal to a Face
-     */
-    function add_normal () {
+    function add_face (mesh, face) {
+      if (face[3] === undefined)
+        mesh.addIndices([ face[0], face[1], face[2] ]);
+      else {
+        mesh.addIndices([ face[0], face[1], face[2] ]);
+        mesh.addIndices([ face[1], face[2], face[3] ]);
+      }
     }
 
     return new Mesh();
