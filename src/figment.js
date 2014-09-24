@@ -1,19 +1,36 @@
 ~function (require, exports, module) {
 
-  function Figment () {
+  /**
+   * Import Interface
+   *
+   *
+   */
+  function ImportInterface () {
   }
 
-  // ...
-  Figment.from = function () {
-    return this;
+  ImportInterface.obj = function () {
   };
 
-  // ...
-  Figment.to = function () {
-    return this;
-  };
+  /**
+   * Export Interface
+   *
+   *
+   */
+  function ExportInterface () {
+  }
 
-  module.exports = Figment;
+  /**
+   * Container for Importer and Exporter
+   *
+   *
+   */
+  function ImporterExporter () {
+  }
+  ImporterExporter.from = ImportInterface;
+  ImporterExporter.to   = ExportInterface;
+
+  // 
+  module.exports = ImporterExporter;
 }
 (
   require,
